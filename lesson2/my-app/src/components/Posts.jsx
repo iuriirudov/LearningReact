@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import styled from "styled-components";
 
 function Posts() {
 	const [posts, setPosts] = useState([]);
@@ -13,7 +12,6 @@ function Posts() {
 		const data = await api.json();
 
 		setPosts(data);
-		console.log(data);
 	};
 
 	return (
