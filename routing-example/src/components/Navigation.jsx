@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+
+import StudentsContext from "../store/students-context";
 
 function Navigation() {
+	const studentsCtx = useContext(StudentsContext);
+
 	return (
 		<nav className="navbar navbar-expand-sm navbar-light bg-light">
 			<div className="container-fluid">
@@ -25,6 +30,7 @@ function Navigation() {
 						<li className="nav-item">
 							<Link to="/students" className="nav-link active" aria-current="page" href="#">
 								Students
+								<span> ({studentsCtx.totalStudents})</span>
 							</Link>
 						</li>
 					</ul>

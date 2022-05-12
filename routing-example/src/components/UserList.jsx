@@ -3,18 +3,35 @@ import { useState, useEffect } from "react";
 import User from "./User";
 
 function UserList() {
-	const [users, setUsers] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
+	const [loadedUsers, setLoadedUsers] = useState([]);
 
 	useEffect(() => {
-		getUsers();
+		setIsLoading(true);
+		fetch(`${process.env.REACT_APP_API}/users.json`)
+			.then((response) => response.json())
+			.then((data) => {
+				const users = [];
+
+				for (const key in data) {
+					const user = {
+						id: key,
+						...data[key],
+					};
+					users.push(user);
+				}
+				setIsLoading(false);
+				setLoadedUsers(users);
+			});
 	}, []);
 
-	const getUsers = async () => {
-		const api = await fetch(`${process.env.REACT_APP_API}/users`);
-		const data = await api.json();
-
-		setUsers(data);
-	};
+	if (isLoading) {
+		return (
+			<section>
+				<p>Loading...</p>
+			</section>
+		);
+	}
 
 	return (
 		<table className="table">
@@ -26,7 +43,7 @@ function UserList() {
 				</tr>
 			</thead>
 			<tbody>
-				{users.map((user) => {
+				{loadedUsers.map((user) => {
 					return <User key={user.id} user={user} />;
 				})}
 			</tbody>

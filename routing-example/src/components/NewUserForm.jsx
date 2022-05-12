@@ -1,8 +1,11 @@
 import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 function NewUserForm() {
 	const nameInputRef = useRef();
 	const emailInputRef = useRef();
+
+	const navigate = useNavigate();
 
 	function submitHandler(event) {
 		event.preventDefault();
@@ -14,6 +17,16 @@ function NewUserForm() {
 			name: enteredName,
 			email: enteredEmail,
 		};
+
+		fetch(`${process.env.REACT_APP_API}/users.json`, {
+			method: "POST",
+			body: JSON.stringify(newUser),
+			headers: {
+				"Content-Type": "application/json",
+			},
+		}).then(() => {
+			navigate("/");
+		});
 	}
 
 	return (
